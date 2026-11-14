@@ -1,0 +1,103 @@
+# nuthatch nest on polygon
+
+A self-hosted blockchain index. Query it locally; there is no third-party API.
+
+## Contracts
+- `ctf` = 0x4d97dcd97ec945f40cf65f87097ace5ea0476045
+- `exchange` = 0xe111180000d2663c0091e4f400237545b87b996b
+- `neg_risk_exchange` = 0xe2222d279d744050d28e00520010520000310f59
+- `neg_risk_adapter` = 0xd91e80cf2e7be2e162c6513ced06f1dd0da35296
+- `exchange_v3` = 0xe3333700ca9d93003f00f0f71f8515005f6c00aa
+
+## Tables (one per contract event, plus any `[extract]` table)
+- `ctf__approval_for_all` - ApprovalForAll(address,address,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, owner, operator, approved)
+- `ctf__condition_preparation` - ConditionPreparation(bytes32,address,bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, conditionId, oracle, questionId, outcomeSlotCount)
+- `ctf__condition_resolution` - ConditionResolution(bytes32,address,bytes32,uint256,uint256[]) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, conditionId, oracle, questionId, outcomeSlotCount, payoutNumerators)
+- `ctf__payout_redemption` - PayoutRedemption(address,address,bytes32,bytes32,uint256[],uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, redeemer, collateralToken, parentCollectionId, conditionId, indexSets, payout)
+- `ctf__position_split` - PositionSplit(address,address,bytes32,bytes32,uint256[],uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, stakeholder, collateralToken, parentCollectionId, conditionId, partition, amount)
+- `ctf__positions_merge` - PositionsMerge(address,address,bytes32,bytes32,uint256[],uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, stakeholder, collateralToken, parentCollectionId, conditionId, partition, amount)
+- `ctf__transfer_batch` - TransferBatch(address,address,address,uint256[],uint256[]) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, operator, from, to, ids, values)
+- `ctf__transfer_single` - TransferSingle(address,address,address,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, operator, from, to, id, value)
+- `ctf__u_r_i` - URI(string,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, value, id)
+- `exchange__fee_charged` - FeeCharged(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, receiver, amount)
+- `exchange__fee_receiver_updated` - FeeReceiverUpdated(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, feeReceiver)
+- `exchange__max_fee_rate_updated` - MaxFeeRateUpdated(uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxFeeRate)
+- `exchange__new_admin` - NewAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, newAdminAddress, admin)
+- `exchange__new_operator` - NewOperator(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, newOperatorAddress, admin)
+- `exchange__order_filled` - OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash, maker, taker, side, tokenId, makerAmountFilled, takerAmountFilled, fee, builder, metadata)
+- `exchange__order_preapproval_invalidated` - OrderPreapprovalInvalidated(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `exchange__order_preapproved` - OrderPreapproved(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `exchange__orders_matched` - OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, takerOrderHash, takerOrderMaker, side, tokenId, makerAmountFilled, takerAmountFilled)
+- `exchange__removed_admin` - RemovedAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, removedAdmin, admin)
+- `exchange__removed_operator` - RemovedOperator(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, removedOperator, admin)
+- `exchange__trading_paused` - TradingPaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `exchange__trading_unpaused` - TradingUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `exchange__user_pause_block_interval_updated` - UserPauseBlockIntervalUpdated(uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, oldInterval, newInterval)
+- `exchange__user_paused` - UserPaused(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user, effectivePauseBlock)
+- `exchange__user_unpaused` - UserUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user)
+- `exchange_v3__execution_result` - ExecutionResult(bytes32,bytes32,uint8,address,bytes32[]) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, tradeId, takerOrderHash, outcome, exchange, makerOrderHashes)
+- `exchange_v3__fee_charged` - FeeCharged(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, receiver, amount)
+- `exchange_v3__initialized` - Initialized(uint64) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, version)
+- `exchange_v3__order_filled` - OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash, maker, taker, side, tokenId, makerAmountFilled, takerAmountFilled, fee, builder, metadata)
+- `exchange_v3__order_preapproval_invalidated` - OrderPreapprovalInvalidated(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `exchange_v3__order_preapproved` - OrderPreapproved(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `exchange_v3__orders_matched` - OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, takerOrderHash, takerOrderMaker, side, tokenId, makerAmountFilled, takerAmountFilled)
+- `exchange_v3__ownership_handover_canceled` - OwnershipHandoverCanceled(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pendingOwner)
+- `exchange_v3__ownership_handover_requested` - OwnershipHandoverRequested(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pendingOwner)
+- `exchange_v3__ownership_transferred` - OwnershipTransferred(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, oldOwner, newOwner)
+- `exchange_v3__roles_updated` - RolesUpdated(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user, roles)
+- `exchange_v3__trading_paused` - TradingPaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `exchange_v3__trading_unpaused` - TradingUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `exchange_v3__upgraded` - Upgraded(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, implementation)
+- `exchange_v3__user_pause_block_interval_updated` - UserPauseBlockIntervalUpdated(uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, oldInterval, newInterval)
+- `exchange_v3__user_paused` - UserPaused(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user, effectivePauseBlock)
+- `exchange_v3__user_unpaused` - UserUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user)
+- `neg_risk_adapter__market_prepared` - MarketPrepared(bytes32,address,uint256,bytes) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, marketId, oracle, feeBips, data)
+- `neg_risk_adapter__new_admin` - NewAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, admin, newAdminAddress)
+- `neg_risk_adapter__outcome_reported` - OutcomeReported(bytes32,bytes32,bool) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, marketId, questionId, outcome)
+- `neg_risk_adapter__payout_redemption` - PayoutRedemption(address,bytes32,uint256[],uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, redeemer, conditionId, amounts, payout)
+- `neg_risk_adapter__position_split` - PositionSplit(address,bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, stakeholder, conditionId, amount)
+- `neg_risk_adapter__positions_converted` - PositionsConverted(address,bytes32,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, stakeholder, marketId, indexSet, amount)
+- `neg_risk_adapter__positions_merge` - PositionsMerge(address,bytes32,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, stakeholder, conditionId, amount)
+- `neg_risk_adapter__question_prepared` - QuestionPrepared(bytes32,bytes32,uint256,bytes) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, marketId, questionId, index, data)
+- `neg_risk_adapter__removed_admin` - RemovedAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, admin, removedAdmin)
+- `neg_risk_exchange__fee_charged` - FeeCharged(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, receiver, amount)
+- `neg_risk_exchange__fee_receiver_updated` - FeeReceiverUpdated(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, feeReceiver)
+- `neg_risk_exchange__max_fee_rate_updated` - MaxFeeRateUpdated(uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, maxFeeRate)
+- `neg_risk_exchange__new_admin` - NewAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, newAdminAddress, admin)
+- `neg_risk_exchange__new_operator` - NewOperator(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, newOperatorAddress, admin)
+- `neg_risk_exchange__order_filled` - OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash, maker, taker, side, tokenId, makerAmountFilled, takerAmountFilled, fee, builder, metadata)
+- `neg_risk_exchange__order_preapproval_invalidated` - OrderPreapprovalInvalidated(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `neg_risk_exchange__order_preapproved` - OrderPreapproved(bytes32) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, orderHash)
+- `neg_risk_exchange__orders_matched` - OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, takerOrderHash, takerOrderMaker, side, tokenId, makerAmountFilled, takerAmountFilled)
+- `neg_risk_exchange__removed_admin` - RemovedAdmin(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, removedAdmin, admin)
+- `neg_risk_exchange__removed_operator` - RemovedOperator(address,address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, removedOperator, admin)
+- `neg_risk_exchange__trading_paused` - TradingPaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `neg_risk_exchange__trading_unpaused` - TradingUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, pauser)
+- `neg_risk_exchange__user_pause_block_interval_updated` - UserPauseBlockIntervalUpdated(uint256,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, oldInterval, newInterval)
+- `neg_risk_exchange__user_paused` - UserPaused(address,uint256) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user, effectivePauseBlock)
+- `neg_risk_exchange__user_unpaused` - UserUnpaused(address) (block_number, block_hash, block_timestamp, tx_hash, log_index, address, _seq, user)
+
+## SQL types
+- `uint`/`int` columns wider than 64 bits are exact decimal text: never `SUM` the raw column.
+  `<col>_dec` is the value as `DECIMAL(38,0)`, NULL when it does not fit (`<col>_overflow` is
+  then true). Ids, nonces and hashes stay on the raw column.
+- `bool` columns are text `'true'`/`'false'`: write `col = 'true'` or `CAST(col AS BOOLEAN)`.
+- Reserved-word columns such as `"from"` and `"to"` must be double-quoted.
+- Call the MCP `schema` tool first: it lists the `_dec`, bool and reserved columns.
+
+## Live HTTP API (run `nuthatch dev`)
+- `GET /`                    index status
+- `GET /tables`              every table with its columns
+- `GET /table/{name}?limit=N` recent rows of one table (hot + sealed)
+- `GET /entity/{id}`         one row by id (`{block:012}-{logindex:06}`)
+- `GET /sql?q=SELECT...`     read-only SQL; each table is a view named `{alias}__{event}`, and each
+                             authored view (`views/*.sql`) answers by its own name
+- `GET /queries`             the mount's SQL mode and the queries its operator declared in
+                             `mounts.toml` (none on an open nest); `GET /q/{name}` runs one
+- `GET /derived`             the nest's incremental entities (`entities.toml`); `GET /derived/{entity}` reads one
+- `GET /diff?from=X&to=Y`    what happened in a range (`block=N`, or `tx=0x..&block=N`), as JSON, `format=text` or `markdown`
+
+## MCP (for coding agents)
+Run `nuthatch mcp` (stdio) to expose tools: status, schema, tables, table, sql, explain, entity, diff.
+Fully offline against the local instance; nothing phones home.

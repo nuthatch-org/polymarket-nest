@@ -1,0 +1,843 @@
+# semantic.toml - what this nest's data *means* (RFC-0016). Read by the MCP `schema`
+# tool, the admin UI, and the scaffolded skill. Edit descriptions freely; the
+# `[table.*.footguns]` are DERIVED from the ABI and regenerated - leave them be.
+
+schema_version = 1
+
+[nest]
+description = "Polymarket on Polygon: Conditional Tokens, the CTF and NegRisk exchanges, the NegRisk adapter and the Poly v2 exchange. Trades are in the `fills` and `matches` views; amounts are raw units with 6 decimals."
+
+[table.ctf__approval_for_all]
+description = "`ApprovalForAll(address,address,bool)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ApprovalForAll(address,address,bool) event"
+
+[table.ctf__approval_for_all.columns]
+approved = "The `approved` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `approved = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `approved = 'true'` or `CAST(approved AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+operator = "The `operator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+owner = "The `owner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__approval_for_all.footguns]
+bools = ["approved"]
+
+[table.ctf__condition_preparation]
+description = "`ConditionPreparation(bytes32,address,bytes32,uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ConditionPreparation(bytes32,address,bytes32,uint256) event"
+
+[table.ctf__condition_preparation.columns]
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oracle = "The `oracle` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outcomeSlotCount = "The `outcomeSlotCount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+questionId = "The `questionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__condition_preparation.footguns]
+big_ints = ["outcomeSlotCount"]
+overflows_dec = ["outcomeSlotCount"]
+
+[table.ctf__condition_resolution]
+description = "`ConditionResolution(bytes32,address,bytes32,uint256,uint256[])` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ConditionResolution(bytes32,address,bytes32,uint256,uint256[]) event"
+
+[table.ctf__condition_resolution.columns]
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oracle = "The `oracle` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outcomeSlotCount = "The `outcomeSlotCount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+payoutNumerators = "The `payoutNumerators` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+questionId = "The `questionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__condition_resolution.footguns]
+big_ints = ["outcomeSlotCount"]
+overflows_dec = ["outcomeSlotCount"]
+
+[table.ctf__payout_redemption]
+description = "`PayoutRedemption(address,address,bytes32,bytes32,uint256[],uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PayoutRedemption(address,address,bytes32,bytes32,uint256[],uint256) event"
+
+[table.ctf__payout_redemption.columns]
+collateralToken = "The `collateralToken` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+indexSets = "The `indexSets` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+parentCollectionId = "The `parentCollectionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+payout = "The `payout` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+redeemer = "The `redeemer` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__payout_redemption.footguns]
+big_ints = ["payout"]
+overflows_dec = ["payout"]
+
+[table.ctf__position_split]
+description = "`PositionSplit(address,address,bytes32,bytes32,uint256[],uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PositionSplit(address,address,bytes32,bytes32,uint256[],uint256) event"
+
+[table.ctf__position_split.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+collateralToken = "The `collateralToken` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+parentCollectionId = "The `parentCollectionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+partition = "The `partition` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+stakeholder = "The `stakeholder` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__position_split.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.ctf__positions_merge]
+description = "`PositionsMerge(address,address,bytes32,bytes32,uint256[],uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PositionsMerge(address,address,bytes32,bytes32,uint256[],uint256) event"
+
+[table.ctf__positions_merge.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+collateralToken = "The `collateralToken` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+parentCollectionId = "The `parentCollectionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+partition = "The `partition` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+stakeholder = "The `stakeholder` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__positions_merge.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.ctf__transfer_batch]
+description = "`TransferBatch(address,address,address,uint256[],uint256[])` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TransferBatch(address,address,address,uint256[],uint256[]) event"
+
+[table.ctf__transfer_batch.columns]
+from = "The `from` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+ids = "The `ids` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+operator = "The `operator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+to = "The `to` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+values = "The `values` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__transfer_batch.footguns]
+reserved_words = [
+    "from",
+    "to",
+    "values",
+]
+
+[table.ctf__transfer_single]
+description = "`TransferSingle(address,address,address,uint256,uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TransferSingle(address,address,address,uint256,uint256) event"
+
+[table.ctf__transfer_single.columns]
+from = "The `from` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+id = "The `id` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+operator = "The `operator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+to = "The `to` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+value = "The `value` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__transfer_single.footguns]
+reserved_words = [
+    "from",
+    "to",
+]
+big_ints = [
+    "id",
+    "value",
+]
+overflows_dec = [
+    "id",
+    "value",
+]
+
+[table.ctf__u_r_i]
+description = "`URI(string,uint256)` events emitted by the `ctf` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per URI(string,uint256) event"
+
+[table.ctf__u_r_i.columns]
+id = "The `id` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+value = "The `value` string parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.ctf__u_r_i.footguns]
+big_ints = ["id"]
+overflows_dec = ["id"]
+
+[table.exchange__fee_charged]
+description = "`FeeCharged(address,uint256)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeeCharged(address,uint256) event"
+
+[table.exchange__fee_charged.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__fee_charged.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.exchange__fee_receiver_updated]
+description = "`FeeReceiverUpdated(address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeeReceiverUpdated(address) event"
+
+[table.exchange__fee_receiver_updated.columns]
+feeReceiver = "The `feeReceiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__max_fee_rate_updated]
+description = "`MaxFeeRateUpdated(uint256)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per MaxFeeRateUpdated(uint256) event"
+
+[table.exchange__max_fee_rate_updated.columns]
+maxFeeRate = "The `maxFeeRate` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__max_fee_rate_updated.footguns]
+big_ints = ["maxFeeRate"]
+overflows_dec = ["maxFeeRate"]
+
+[table.exchange__new_admin]
+description = "`NewAdmin(address,address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per NewAdmin(address,address) event"
+
+[table.exchange__new_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+newAdminAddress = "The `newAdminAddress` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__new_operator]
+description = "`NewOperator(address,address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per NewOperator(address,address) event"
+
+[table.exchange__new_operator.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+newOperatorAddress = "The `newOperatorAddress` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__order_filled]
+description = "`OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) event"
+
+[table.exchange__order_filled.columns]
+builder = "The `builder` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+fee = "The `fee` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maker = "The `maker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+metadata = "The `metadata` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+taker = "The `taker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__order_filled.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+
+[table.exchange__order_preapproval_invalidated]
+description = "`OrderPreapprovalInvalidated(bytes32)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapprovalInvalidated(bytes32) event"
+
+[table.exchange__order_preapproval_invalidated.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__order_preapproved]
+description = "`OrderPreapproved(bytes32)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapproved(bytes32) event"
+
+[table.exchange__order_preapproved.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__orders_matched]
+description = "`OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) event"
+
+[table.exchange__orders_matched.columns]
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderHash = "The `takerOrderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderMaker = "The `takerOrderMaker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__orders_matched.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+
+[table.exchange__removed_admin]
+description = "`RemovedAdmin(address,address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RemovedAdmin(address,address) event"
+
+[table.exchange__removed_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+removedAdmin = "The `removedAdmin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__removed_operator]
+description = "`RemovedOperator(address,address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RemovedOperator(address,address) event"
+
+[table.exchange__removed_operator.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+removedOperator = "The `removedOperator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__trading_paused]
+description = "`TradingPaused(address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingPaused(address) event"
+
+[table.exchange__trading_paused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__trading_unpaused]
+description = "`TradingUnpaused(address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingUnpaused(address) event"
+
+[table.exchange__trading_unpaused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__user_pause_block_interval_updated]
+description = "`UserPauseBlockIntervalUpdated(uint256,uint256)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPauseBlockIntervalUpdated(uint256,uint256) event"
+
+[table.exchange__user_pause_block_interval_updated.columns]
+newInterval = "The `newInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oldInterval = "The `oldInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__user_pause_block_interval_updated.footguns]
+big_ints = [
+    "oldInterval",
+    "newInterval",
+]
+overflows_dec = [
+    "oldInterval",
+    "newInterval",
+]
+
+[table.exchange__user_paused]
+description = "`UserPaused(address,uint256)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPaused(address,uint256) event"
+
+[table.exchange__user_paused.columns]
+effectivePauseBlock = "The `effectivePauseBlock` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__user_paused.footguns]
+reserved_words = ["user"]
+big_ints = ["effectivePauseBlock"]
+overflows_dec = ["effectivePauseBlock"]
+
+[table.exchange__user_unpaused]
+description = "`UserUnpaused(address)` events emitted by the `exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserUnpaused(address) event"
+
+[table.exchange__user_unpaused.columns]
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange__user_unpaused.footguns]
+reserved_words = ["user"]
+
+[table.exchange_v3__execution_result]
+description = "`ExecutionResult(bytes32,bytes32,uint8,address,bytes32[])` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per ExecutionResult(bytes32,bytes32,uint8,address,bytes32[]) event"
+
+[table.exchange_v3__execution_result.columns]
+exchange = "The `exchange` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+makerOrderHashes = "The `makerOrderHashes` bytes32[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outcome = "The `outcome` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderHash = "The `takerOrderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tradeId = "The `tradeId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__fee_charged]
+description = "`FeeCharged(address,uint256)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeeCharged(address,uint256) event"
+
+[table.exchange_v3__fee_charged.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__fee_charged.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.exchange_v3__initialized]
+description = "`Initialized(uint64)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Initialized(uint64) event"
+
+[table.exchange_v3__initialized.columns]
+version = "The `version` uint64 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__order_filled]
+description = "`OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) event"
+
+[table.exchange_v3__order_filled.columns]
+builder = "The `builder` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+fee = "The `fee` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maker = "The `maker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+metadata = "The `metadata` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+taker = "The `taker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__order_filled.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+
+[table.exchange_v3__order_preapproval_invalidated]
+description = "`OrderPreapprovalInvalidated(bytes32)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapprovalInvalidated(bytes32) event"
+
+[table.exchange_v3__order_preapproval_invalidated.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__order_preapproved]
+description = "`OrderPreapproved(bytes32)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapproved(bytes32) event"
+
+[table.exchange_v3__order_preapproved.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__orders_matched]
+description = "`OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) event"
+
+[table.exchange_v3__orders_matched.columns]
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderHash = "The `takerOrderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderMaker = "The `takerOrderMaker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__orders_matched.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+
+[table.exchange_v3__ownership_handover_canceled]
+description = "`OwnershipHandoverCanceled(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OwnershipHandoverCanceled(address) event"
+
+[table.exchange_v3__ownership_handover_canceled.columns]
+pendingOwner = "The `pendingOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__ownership_handover_requested]
+description = "`OwnershipHandoverRequested(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OwnershipHandoverRequested(address) event"
+
+[table.exchange_v3__ownership_handover_requested.columns]
+pendingOwner = "The `pendingOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__ownership_transferred]
+description = "`OwnershipTransferred(address,address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OwnershipTransferred(address,address) event"
+
+[table.exchange_v3__ownership_transferred.columns]
+newOwner = "The `newOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oldOwner = "The `oldOwner` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__roles_updated]
+description = "`RolesUpdated(address,uint256)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RolesUpdated(address,uint256) event"
+
+[table.exchange_v3__roles_updated.columns]
+roles = "The `roles` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__roles_updated.footguns]
+reserved_words = ["user"]
+big_ints = ["roles"]
+overflows_dec = ["roles"]
+
+[table.exchange_v3__trading_paused]
+description = "`TradingPaused(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingPaused(address) event"
+
+[table.exchange_v3__trading_paused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__trading_unpaused]
+description = "`TradingUnpaused(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingUnpaused(address) event"
+
+[table.exchange_v3__trading_unpaused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__upgraded]
+description = "`Upgraded(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per Upgraded(address) event"
+
+[table.exchange_v3__upgraded.columns]
+implementation = "The `implementation` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__user_pause_block_interval_updated]
+description = "`UserPauseBlockIntervalUpdated(uint256,uint256)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPauseBlockIntervalUpdated(uint256,uint256) event"
+
+[table.exchange_v3__user_pause_block_interval_updated.columns]
+newInterval = "The `newInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oldInterval = "The `oldInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__user_pause_block_interval_updated.footguns]
+big_ints = [
+    "oldInterval",
+    "newInterval",
+]
+overflows_dec = [
+    "oldInterval",
+    "newInterval",
+]
+
+[table.exchange_v3__user_paused]
+description = "`UserPaused(address,uint256)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPaused(address,uint256) event"
+
+[table.exchange_v3__user_paused.columns]
+effectivePauseBlock = "The `effectivePauseBlock` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__user_paused.footguns]
+reserved_words = ["user"]
+big_ints = ["effectivePauseBlock"]
+overflows_dec = ["effectivePauseBlock"]
+
+[table.exchange_v3__user_unpaused]
+description = "`UserUnpaused(address)` events emitted by the `exchange_v3` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserUnpaused(address) event"
+
+[table.exchange_v3__user_unpaused.columns]
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.exchange_v3__user_unpaused.footguns]
+reserved_words = ["user"]
+
+[table.neg_risk_adapter__market_prepared]
+description = "`MarketPrepared(bytes32,address,uint256,bytes)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per MarketPrepared(bytes32,address,uint256,bytes) event"
+
+[table.neg_risk_adapter__market_prepared.columns]
+data = "The `data` bytes parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+feeBips = "The `feeBips` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+marketId = "The `marketId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oracle = "The `oracle` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__market_prepared.footguns]
+big_ints = ["feeBips"]
+overflows_dec = ["feeBips"]
+
+[table.neg_risk_adapter__new_admin]
+description = "`NewAdmin(address,address)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per NewAdmin(address,address) event"
+
+[table.neg_risk_adapter__new_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+newAdminAddress = "The `newAdminAddress` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__outcome_reported]
+description = "`OutcomeReported(bytes32,bytes32,bool)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OutcomeReported(bytes32,bytes32,bool) event"
+
+[table.neg_risk_adapter__outcome_reported.columns]
+marketId = "The `marketId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+outcome = "The `outcome` bool parameter - stored as exact text `'true'`/`'false'`, not a SQL boolean. `outcome = true` and `AND`/`NOT` implicitly cast and work; `COALESCE`, `CASE`, `bool_and`/`bool_or` and `UNION` do not. Write `outcome = 'true'` or `CAST(outcome AS BOOLEAN)`. (seeded from the ABI - edit semantic.toml to improve this)"
+questionId = "The `questionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__outcome_reported.footguns]
+bools = ["outcome"]
+
+[table.neg_risk_adapter__payout_redemption]
+description = "`PayoutRedemption(address,bytes32,uint256[],uint256)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PayoutRedemption(address,bytes32,uint256[],uint256) event"
+
+[table.neg_risk_adapter__payout_redemption.columns]
+amounts = "The `amounts` uint256[] parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+payout = "The `payout` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+redeemer = "The `redeemer` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__payout_redemption.footguns]
+big_ints = ["payout"]
+overflows_dec = ["payout"]
+
+[table.neg_risk_adapter__position_split]
+description = "`PositionSplit(address,bytes32,uint256)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PositionSplit(address,bytes32,uint256) event"
+
+[table.neg_risk_adapter__position_split.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+stakeholder = "The `stakeholder` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__position_split.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.neg_risk_adapter__positions_converted]
+description = "`PositionsConverted(address,bytes32,uint256,uint256)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PositionsConverted(address,bytes32,uint256,uint256) event"
+
+[table.neg_risk_adapter__positions_converted.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+indexSet = "The `indexSet` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+marketId = "The `marketId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+stakeholder = "The `stakeholder` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__positions_converted.footguns]
+big_ints = [
+    "indexSet",
+    "amount",
+]
+overflows_dec = [
+    "indexSet",
+    "amount",
+]
+
+[table.neg_risk_adapter__positions_merge]
+description = "`PositionsMerge(address,bytes32,uint256)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per PositionsMerge(address,bytes32,uint256) event"
+
+[table.neg_risk_adapter__positions_merge.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+conditionId = "The `conditionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+stakeholder = "The `stakeholder` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__positions_merge.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.neg_risk_adapter__question_prepared]
+description = "`QuestionPrepared(bytes32,bytes32,uint256,bytes)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per QuestionPrepared(bytes32,bytes32,uint256,bytes) event"
+
+[table.neg_risk_adapter__question_prepared.columns]
+data = "The `data` bytes parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+index = "The `index` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+marketId = "The `marketId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+questionId = "The `questionId` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_adapter__question_prepared.footguns]
+reserved_words = ["index"]
+big_ints = ["index"]
+overflows_dec = ["index"]
+
+[table.neg_risk_adapter__removed_admin]
+description = "`RemovedAdmin(address,address)` events emitted by the `neg_risk_adapter` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RemovedAdmin(address,address) event"
+
+[table.neg_risk_adapter__removed_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+removedAdmin = "The `removedAdmin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__fee_charged]
+description = "`FeeCharged(address,uint256)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeeCharged(address,uint256) event"
+
+[table.neg_risk_exchange__fee_charged.columns]
+amount = "The `amount` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+receiver = "The `receiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__fee_charged.footguns]
+big_ints = ["amount"]
+overflows_dec = ["amount"]
+
+[table.neg_risk_exchange__fee_receiver_updated]
+description = "`FeeReceiverUpdated(address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per FeeReceiverUpdated(address) event"
+
+[table.neg_risk_exchange__fee_receiver_updated.columns]
+feeReceiver = "The `feeReceiver` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__max_fee_rate_updated]
+description = "`MaxFeeRateUpdated(uint256)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per MaxFeeRateUpdated(uint256) event"
+
+[table.neg_risk_exchange__max_fee_rate_updated.columns]
+maxFeeRate = "The `maxFeeRate` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__max_fee_rate_updated.footguns]
+big_ints = ["maxFeeRate"]
+overflows_dec = ["maxFeeRate"]
+
+[table.neg_risk_exchange__new_admin]
+description = "`NewAdmin(address,address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per NewAdmin(address,address) event"
+
+[table.neg_risk_exchange__new_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+newAdminAddress = "The `newAdminAddress` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__new_operator]
+description = "`NewOperator(address,address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per NewOperator(address,address) event"
+
+[table.neg_risk_exchange__new_operator.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+newOperatorAddress = "The `newOperatorAddress` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__order_filled]
+description = "`OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderFilled(bytes32,address,address,uint8,uint256,uint256,uint256,uint256,bytes32,bytes32) event"
+
+[table.neg_risk_exchange__order_filled.columns]
+builder = "The `builder` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+fee = "The `fee` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+maker = "The `maker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+metadata = "The `metadata` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+taker = "The `taker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__order_filled.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+    "fee",
+]
+
+[table.neg_risk_exchange__order_preapproval_invalidated]
+description = "`OrderPreapprovalInvalidated(bytes32)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapprovalInvalidated(bytes32) event"
+
+[table.neg_risk_exchange__order_preapproval_invalidated.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__order_preapproved]
+description = "`OrderPreapproved(bytes32)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrderPreapproved(bytes32) event"
+
+[table.neg_risk_exchange__order_preapproved.columns]
+orderHash = "The `orderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__orders_matched]
+description = "`OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per OrdersMatched(bytes32,address,uint8,uint256,uint256,uint256) event"
+
+[table.neg_risk_exchange__orders_matched.columns]
+makerAmountFilled = "The `makerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+side = "The `side` uint8 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerAmountFilled = "The `takerAmountFilled` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderHash = "The `takerOrderHash` bytes32 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+takerOrderMaker = "The `takerOrderMaker` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+tokenId = "The `tokenId` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__orders_matched.footguns]
+big_ints = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+overflows_dec = [
+    "tokenId",
+    "makerAmountFilled",
+    "takerAmountFilled",
+]
+
+[table.neg_risk_exchange__removed_admin]
+description = "`RemovedAdmin(address,address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RemovedAdmin(address,address) event"
+
+[table.neg_risk_exchange__removed_admin.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+removedAdmin = "The `removedAdmin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__removed_operator]
+description = "`RemovedOperator(address,address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per RemovedOperator(address,address) event"
+
+[table.neg_risk_exchange__removed_operator.columns]
+admin = "The `admin` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+removedOperator = "The `removedOperator` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__trading_paused]
+description = "`TradingPaused(address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingPaused(address) event"
+
+[table.neg_risk_exchange__trading_paused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__trading_unpaused]
+description = "`TradingUnpaused(address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per TradingUnpaused(address) event"
+
+[table.neg_risk_exchange__trading_unpaused.columns]
+pauser = "The `pauser` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__user_pause_block_interval_updated]
+description = "`UserPauseBlockIntervalUpdated(uint256,uint256)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPauseBlockIntervalUpdated(uint256,uint256) event"
+
+[table.neg_risk_exchange__user_pause_block_interval_updated.columns]
+newInterval = "The `newInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+oldInterval = "The `oldInterval` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__user_pause_block_interval_updated.footguns]
+big_ints = [
+    "oldInterval",
+    "newInterval",
+]
+overflows_dec = [
+    "oldInterval",
+    "newInterval",
+]
+
+[table.neg_risk_exchange__user_paused]
+description = "`UserPaused(address,uint256)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserPaused(address,uint256) event"
+
+[table.neg_risk_exchange__user_paused.columns]
+effectivePauseBlock = "The `effectivePauseBlock` uint256 parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__user_paused.footguns]
+reserved_words = ["user"]
+big_ints = ["effectivePauseBlock"]
+overflows_dec = ["effectivePauseBlock"]
+
+[table.neg_risk_exchange__user_unpaused]
+description = "`UserUnpaused(address)` events emitted by the `neg_risk_exchange` contract. (seeded from the ABI - edit semantic.toml to improve this)"
+grain = "one row per UserUnpaused(address) event"
+
+[table.neg_risk_exchange__user_unpaused.columns]
+user = "The `user` address parameter. (seeded from the ABI - edit semantic.toml to improve this)"
+
+[table.neg_risk_exchange__user_unpaused.footguns]
+reserved_words = ["user"]
+
+[view.fills]
+description = "One row per OrderFilled across the three exchanges. A match emits one row per maker order and one for the taker order (is_taker_order, where taker is the exchange itself). collateral is pUSD and shares are outcome tokens, both raw units with 6 decimals. token_id is a full-width uint256 kept as text."
+
+[view.matches]
+description = "One row per OrdersMatched: a taker order and what it filled, from the taker's side. Count trades and volume here, not in fills, which carries both sides of each match."
+
+[view.volume_hourly]
+description = "Matched taker orders and collateral (raw pUSD units, 6 decimals) per venue and hour. hour is the unix time the hour starts."

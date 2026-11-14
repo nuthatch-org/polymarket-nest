@@ -1,0 +1,40 @@
+[nest]
+name = "polymarket"
+chain = "polygon"
+chain_id = 137
+rpc_urls = [
+    "https://polygon.drpc.org",
+    "https://polygon.gateway.tenderly.co",
+]
+schema_version = 1
+block_timestamps = true
+
+[[contracts]]
+alias = "ctf"
+address = "0x4d97dcd97ec945f40cf65f87097ace5ea0476045"
+start_block = 4023686
+abi = "abis/ctf.json"
+
+[[contracts]]
+alias = "exchange"
+address = "0xe111180000d2663c0091e4f400237545b87b996b"
+start_block = 84902353
+abi = "abis/exchange.json"
+
+[[contracts]]
+alias = "neg_risk_exchange"
+address = "0xe2222d279d744050d28e00520010520000310f59"
+start_block = 85058176
+abi = "abis/neg_risk_exchange.json"
+
+[[contracts]]
+alias = "neg_risk_adapter"
+address = "0xd91e80cf2e7be2e162c6513ced06f1dd0da35296"
+start_block = 50505403
+abi = "abis/neg_risk_adapter.json"
+
+[[contracts]]
+alias = "exchange_v3"
+address = "0xe3333700ca9d93003f00f0f71f8515005f6c00aa"
+start_block = 87479471
+abi = "abis/exchange_v3.json"
